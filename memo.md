@@ -66,3 +66,65 @@ pnpm v9 まではすべてのビルドスクリプトがデフォルトで実行
 | sharp     | `install` スクリプトでネイティブの画像処理ライブラリをセットアップ |
 
 どちらもビルドスクリプトが実行されないと正常に動作しないため、許可リストに追加している。
+
+---
+
+## tsconfig.json の設定解説
+
+```json
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}
+```
+
+### `"extends": "astro/tsconfigs/strict"`
+
+Astro が提供する TypeScript プリセット設定を継承している。プリセットは3段階ある：
+
+| プリセット | 内容 |
+|-----------|------|
+| `base` | 最低限の設定 |
+| `strict` | `base` + 厳格な型チェック（`strictNullChecks` 等） |
+| `strictest` | `strict` + さらに厳しいルール |
+
+`strict` は型安全を保ちつつ書きやすさとのバランスが良い選択。自分で `compilerOptions` を一つずつ書く必要がなく、Astro に最適化された設定がまとめて適用される。
+
+### `"include": [".astro/types.d.ts", "**/*"]`
+
+TypeScript のコンパイル対象を指定している。
+
+- **`.astro/types.d.ts`** — Astro が自動生成する型定義ファイル。`astro:content` や `Astro.props` などの Astro 固有の型がここで定義される。これを含めないとエディタ上で型エラーになる
+- **`"**/*"`** — プロジェクト内の全ファイルを対象にする
+
+### `"exclude": ["dist"]`
+
+ビルド出力ディレクトリ `dist/` を型チェックの対象外にしている。生成済みファイルをチェックしても意味がなく、チェック速度が遅くなるだけなので除外。
+
+---
+
+## astro.config.ts の設定解説
+
+```ts
+import { defineConfig } from "astro/config";
+
+export default defineConfig({});
+```
+
+### `defineConfig()`
+
+Astro 公式のヘルパー関数。引数に渡すオブジェクトの型補完・バリデーションを提供する。機能的には「渡されたオブジェクトをそのまま返す」だけだが、エディタ上で設定項目の補完が効くようになる。
+
+### 現状は空 `{}`
+
+minimal テンプレートの初期状態なので、すべてデフォルト値が使われている。主なデフォルト値：
+
+| 設定 | デフォルト | 意味 |
+|------|-----------|------|
+| `output` | `"static"` | 静的サイト生成（SSG） |
+| `site` | なし | サイトURL（未設定だと `Astro.site` が `undefined`） |
+| `integrations` | `[]` | 追加インテグレーションなし |
+| `vite` | `{}` | Vite の追加設定なし |
+
+README の Phase 2 以降で、ここに `site`、`vite.plugins`（Tailwind）、`integrations`（sitemap）が追加されていく予定。
