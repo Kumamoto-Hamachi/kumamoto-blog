@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+
+// タグごとの記事数を集計
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+
+// タグ名でソート
+const sortedTags = [...tagCounts.entries()].sort((a, b) =>
+  a[0].localeCompare(b[0], "ja"),
+);
+---
+
+<BaseLayout title="タグ一覧" description="記事のタグ一覧">
+  <h1 class="text-3xl font-bold mb-8">タグ一覧</h1>
+  <div class="flex flex-wrap gap-3">
+    {
+      sortedTags.map(([tag, count]) => (
+        <a
+          href={`/tags/${tag}`}
+          class="inline-flex items-center gap-1 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 px-3 py-2 rounded-lg transition-colors"
+        >
+          <span>{tag}</span>
+          <span class="text-xs text-gray-400">({count})</span>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>

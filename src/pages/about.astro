@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About" description="kumamoto blogについて">
+  <h1 class="text-3xl font-bold mb-8">About</h1>
+  <div class="space-y-4 text-gray-700">
+    <p>
+      kumamoto
+      blogは、プログラミングや技術に関する学習記録を綴る個人ブログです。
+    </p>
+    <h2 class="text-xl font-semibold mt-6">技術スタック</h2>
+    <ul class="list-disc list-inside space-y-1">
+      <li>Astro v5 — 静的サイトジェネレーター</li>
+      <li>Tailwind CSS v4 — スタイリング</li>
+      <li>Cloudflare Pages — ホスティング</li>
+    </ul>
+    <h2 class="text-xl font-semibold mt-6">お問い合わせ</h2>
+    <p>
+      GitHubリポジトリの
+      <a
+        href="https://github.com/kumamoto/kumamoto-blog"
+        class="text-blue-600 hover:underline"
+      >
+        Issues
+      </a>
+      からお気軽にどうぞ。
+    </p>
+  </div>
+</BaseLayout>
