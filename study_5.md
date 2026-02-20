@@ -1,4 +1,4 @@
-# Prose.astro / slot / タイポグラフィ 学習メモ
+# Prose.astro / slot / タイポグラフィ / Astro.props 学習メモ
 
 ## タイポグラフィ（Typography）とは
 
@@ -123,3 +123,62 @@ React:   {children}
 Vue:     <slot />
 Svelte:  <slot />
 ```
+
+---
+
+## `Astro.props` とは
+
+**親コンポーネントから渡された属性（props）を受け取るオブジェクト**。React の `props` と同じ概念。
+
+### 実際のコードで見る
+
+```astro
+<!-- 親：blog/[id].astro（渡す側） -->
+<BaseLayout title={post.data.title} description={post.data.description}>
+  ...
+</BaseLayout>
+```
+
+```astro
+<!-- 子：BaseLayout.astro（受け取る側） -->
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "kumamoto blog — 技術メモと学習記録" } =
+  Astro.props;
+---
+
+<title>{title} | kumamoto blog</title>
+<meta name="description" content={description} />
+```
+
+流れ：
+
+```
+親が <BaseLayout title="記事タイトル" description="説明文"> と書く
+                    ↓
+Astro.props = { title: "記事タイトル", description: "説明文" }
+                    ↓
+分割代入で const { title, description } = Astro.props; で取り出す
+```
+
+### React との比較
+
+```
+【Astro】
+interface Props { title: string; }
+const { title } = Astro.props;
+
+【React】
+interface Props { title: string; }
+function Component({ title }: Props) { ... }
+// または
+function Component(props: Props) {
+  const { title } = props;
+}
+```
+
+やっていることは同じで、**書き方が違うだけ**。Astro はフェンス（`---`）内でグローバルな `Astro` オブジェクトから取得する形になっている。
