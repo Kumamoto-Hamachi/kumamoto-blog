@@ -1,13 +1,8 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-  </head>
-  <body>
-    <h1 class="text-3xl font-bold text-blue-600">kumamoto blog</h1>
-    <p class="mt-4 text-gray-600">Tailwind CSS v4 が動作しています！</p>
-  </body>
-</html>
+<BaseLayout title="ホーム">
+  <h1 class="text-3xl font-bold mb-4">kumamoto blog</h1>
+  <p class="text-gray-600">技術メモと学習記録</p>
+</BaseLayout>
