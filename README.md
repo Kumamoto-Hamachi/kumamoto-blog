@@ -4,13 +4,13 @@ Astro v5 + Tailwind CSS v4 + Cloudflare Pages で構築する技術ブログ。
 
 ## 技術スタック
 
-| 技術 | バージョン | 用途 |
-|------|-----------|------|
-| [Astro](https://astro.build/) | v5 | 静的サイトジェネレーター |
-| [Tailwind CSS](https://tailwindcss.com/) | v4 | ユーティリティファーストCSS |
-| [Cloudflare Pages](https://pages.cloudflare.com/) | - | ホスティング・デプロイ |
-| [pnpm](https://pnpm.io/) | v10 | パッケージマネージャー |
-| [mise](https://mise.jdx.dev/) | - | ランタイムバージョン管理 |
+| 技術                                              | バージョン | 用途                        |
+| ------------------------------------------------- | ---------- | --------------------------- |
+| [Astro](https://astro.build/)                     | v5         | 静的サイトジェネレーター    |
+| [Tailwind CSS](https://tailwindcss.com/)          | v4         | ユーティリティファーストCSS |
+| [Cloudflare Pages](https://pages.cloudflare.com/) | -          | ホスティング・デプロイ      |
+| [pnpm](https://pnpm.io/)                          | v10        | パッケージマネージャー      |
+| [mise](https://mise.jdx.dev/)                     | -          | ランタイムバージョン管理    |
 
 ## プロジェクト構造（完成形）
 
@@ -100,8 +100,8 @@ pnpm create astro@latest ./tmp-astro -- --template minimal --no-install --no-git
 # ファイルを移動（既存READMEは上書きしない）
 cp -rn ./tmp-astro/* ./tmp-astro/.* . 2>/dev/null || true
 # もしくはrsyncを用いる
-rsync -a --ignore-existing ./tmp-astro/ . 
-# 用が済んだら一時ファイルは除去 
+rsync -a --ignore-existing ./tmp-astro/ .
+# 用が済んだら一時ファイルは除去
 rm -rf ./tmp-astro
 ```
 
@@ -194,6 +194,7 @@ mkdir -p src/styles
 ```
 
 > **Tailwind v4 の変更点**:
+>
 > - `@tailwind base; @tailwind components; @tailwind utilities;` → `@import "tailwindcss"` に一本化
 > - プラグインは `tailwind.config.js` ではなく CSS内の `@plugin` ディレクティブで読み込む
 > - コンテンツパスの設定は不要（自動検出される）
@@ -228,6 +229,12 @@ pnpm dev
 - [ ] `tailwind.config.js` や `postcss.config.js` が **存在しない** ことを確認
 - [ ] ビルドエラーがないことを確認 (`pnpm build`)
 
+> **補足: ESLint / Prettier / VSCode 設定について**
+>
+> ESLint・Prettier・VSCode の開発環境設定は、コードを書き始める前（Phase 2 の直後）に整備するのが望ましい。
+> 後から導入すると既存ファイルに大量のフォーマット差分が発生し、git の差分が読みづらくなる。
+> 具体的なセットアップ手順は Phase 9 に記載しているが、実施タイミングはここを推奨する。
+
 ---
 
 ## Phase 3: レイアウトとコンポーネント構築
@@ -248,7 +255,8 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "kumamoto blog — 技術メモと学習記録" } = Astro.props;
+const { title, description = "kumamoto blog — 技術メモと学習記録" } =
+  Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -351,12 +359,7 @@ const currentYear = new Date().getFullYear();
   <div class="mx-auto max-w-3xl px-4 py-6 text-center text-sm text-gray-500">
     <p>&copy; {currentYear} kumamoto blog. All rights reserved.</p>
     <p class="mt-1">
-      <a
-        href="/rss.xml"
-        class="hover:text-blue-600 transition-colors"
-      >
-        RSS
-      </a>
+      <a href="/rss.xml" class="hover:text-blue-600 transition-colors"> RSS </a>
     </p>
   </div>
 </footer>
@@ -430,6 +433,7 @@ export const collections = { blog };
 ```
 
 > **Astro v5 での重要な変更点**:
+>
 > - 設定ファイルの場所が `src/content/config.ts` → **`src/content.config.ts`** に変更
 > - `type: "content"` の代わりに `loader: glob(...)` を使用
 > - `slug` フィールドは廃止、代わりに **`id`** を使用
@@ -469,7 +473,7 @@ kumamoto blogへようこそ！このブログは **Astro v5** と **Tailwind CS
 
 `src/data/blog/astro-content-collections.md` を作成する。
 
-```markdown
+````markdown
 ---
 title: "Astro v5 のコンテンツコレクション入門"
 description: "Astro v5 で導入された Content Layer API の使い方を解説します。"
@@ -500,11 +504,13 @@ const blog = defineCollection({
   }),
 });
 ```
+````
 
 ## まとめ
 
 Content Layer API により、より柔軟なコンテンツ管理が可能になりました。
-```
+
+````
 
 ### 4-3. 記事一覧ページ (トップページ)
 
@@ -555,7 +561,7 @@ const posts = (await getCollection("blog"))
     }
   </ul>
 </BaseLayout>
-```
+````
 
 > **コレクションのソート**: Astro v5 では `getCollection()` の返り値の順序が**非決定的**。
 > 必ず `.sort()` で明示的にソートすること。
@@ -603,8 +609,7 @@ const { Content } = await render(post);
         {
           post.data.updatedDate && (
             <span>
-              (更新:{" "}
-              {post.data.updatedDate.toLocaleDateString("ja-JP")})
+              (更新: {post.data.updatedDate.toLocaleDateString("ja-JP")})
             </span>
           )
         }
@@ -660,7 +665,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <h1 class="text-3xl font-bold mb-8">About</h1>
   <div class="space-y-4 text-gray-700">
     <p>
-      kumamoto blogは、プログラミングや技術に関する学習記録を綴る個人ブログです。
+      kumamoto
+      blogは、プログラミングや技術に関する学習記録を綴る個人ブログです。
     </p>
     <h2 class="text-xl font-semibold mt-6">技術スタック</h2>
     <ul class="list-disc list-inside space-y-1">
@@ -771,10 +777,7 @@ interface Props {
 const { tag, posts } = Astro.props;
 ---
 
-<BaseLayout
-  title={`タグ: ${tag}`}
-  description={`「${tag}」タグの記事一覧`}
->
+<BaseLayout title={`タグ: ${tag}`} description={`「${tag}」タグの記事一覧`}>
   <h1 class="text-3xl font-bold mb-2">
     タグ: <span class="text-blue-600">{tag}</span>
   </h1>
@@ -1062,12 +1065,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <div class="text-center py-20">
     <h1 class="text-6xl font-bold text-gray-300 mb-4">404</h1>
     <p class="text-xl text-gray-600 mb-8">ページが見つかりませんでした</p>
-    <a
-      href="/"
-      class="text-blue-600 hover:underline"
-    >
-      ← ホームに戻る
-    </a>
+    <a href="/" class="text-blue-600 hover:underline"> ← ホームに戻る </a>
   </div>
 </BaseLayout>
 ```
@@ -1090,16 +1088,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 3. GitHubリポジトリ `kumamoto-blog` を選択
 4. ビルド設定:
 
-| 項目 | 値 |
-|------|-----|
-| Framework preset | Astro |
-| Build command | `pnpm run build` |
-| Build output directory | `dist` |
+| 項目                   | 値               |
+| ---------------------- | ---------------- |
+| Framework preset       | Astro            |
+| Build command          | `pnpm run build` |
+| Build output directory | `dist`           |
 
 5. **環境変数** に以下を追加:
 
-| 変数名 | 値 |
-|--------|-----|
+| 変数名         | 値        |
+| -------------- | --------- |
 | `NODE_VERSION` | `24.13.1` |
 
 > `mise.toml` で固定しているバージョンと合わせる。
@@ -1121,7 +1119,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 // wrangler.jsonc
 {
   "name": "kumamoto-blog",
-  "pages_build_output_dir": "./dist"
+  "pages_build_output_dir": "./dist",
 }
 ```
 
@@ -1159,14 +1157,14 @@ pnpm build && npx wrangler pages dev dist
 }
 ```
 
-| コマンド | 用途 |
-|---------|------|
-| `pnpm dev` | 開発サーバー起動 (`http://localhost:4321`) |
-| `pnpm build` | 本番ビルド (`dist/` に出力) |
-| `pnpm preview` | ビルド結果をローカルでプレビュー |
-| `pnpm check` | TypeScript型チェック + Astro診断 |
-| `pnpm test` | テスト実行（1回） |
-| `pnpm test:watch` | テスト実行（ウォッチモード） |
+| コマンド          | 用途                                       |
+| ----------------- | ------------------------------------------ |
+| `pnpm dev`        | 開発サーバー起動 (`http://localhost:4321`) |
+| `pnpm build`      | 本番ビルド (`dist/` に出力)                |
+| `pnpm preview`    | ビルド結果をローカルでプレビュー           |
+| `pnpm check`      | TypeScript型チェック + Astro診断           |
+| `pnpm test`       | テスト実行（1回）                          |
+| `pnpm test:watch` | テスト実行（ウォッチモード）               |
 
 ### 9-2. astro check 導入
 
@@ -1224,22 +1222,22 @@ git push
 
 ### Tailwind CSS v4 (v3 からの変更)
 
-| 項目 | v3 | v4 |
-|------|----|----|
-| インポート | `@tailwind base/components/utilities` | `@import "tailwindcss"` |
-| 設定ファイル | `tailwind.config.js` (必須) | 不要 (CSS `@theme` で代替) |
-| コンテンツパス | `content: [...]` の手動設定 | 自動検出 |
-| PostCSS | `postcss.config.js` 必要 | `@tailwindcss/vite` 使用時は不要 |
-| プラグイン | `plugins: [require('...')]` in JS | `@plugin "..."` in CSS |
-| Astro連携 | `@astrojs/tailwind` | `@tailwindcss/vite` |
+| 項目           | v3                                    | v4                               |
+| -------------- | ------------------------------------- | -------------------------------- |
+| インポート     | `@tailwind base/components/utilities` | `@import "tailwindcss"`          |
+| 設定ファイル   | `tailwind.config.js` (必須)           | 不要 (CSS `@theme` で代替)       |
+| コンテンツパス | `content: [...]` の手動設定           | 自動検出                         |
+| PostCSS        | `postcss.config.js` 必要              | `@tailwindcss/vite` 使用時は不要 |
+| プラグイン     | `plugins: [require('...')]` in JS     | `@plugin "..."` in CSS           |
+| Astro連携      | `@astrojs/tailwind`                   | `@tailwindcss/vite`              |
 
 ### Astro v5 Content Layer (v4 からの変更)
 
-| 項目 | v4 | v5 |
-|------|----|----|
-| 設定ファイル | `src/content/config.ts` | `src/content.config.ts` |
-| コレクション定義 | `type: "content"` | `loader: glob(...)` |
-| 記事の識別子 | `slug` | `id` |
-| レンダリング | `entry.render()` | `render(entry)` (インポートが必要) |
-| データの場所 | `src/content/` 固定 | 任意のディレクトリを指定可能 |
-| コレクション順序 | 決定的 | 非決定的（明示的ソート必須） |
+| 項目             | v4                      | v5                                 |
+| ---------------- | ----------------------- | ---------------------------------- |
+| 設定ファイル     | `src/content/config.ts` | `src/content.config.ts`            |
+| コレクション定義 | `type: "content"`       | `loader: glob(...)`                |
+| 記事の識別子     | `slug`                  | `id`                               |
+| レンダリング     | `entry.render()`        | `render(entry)` (インポートが必要) |
+| データの場所     | `src/content/` 固定     | 任意のディレクトリを指定可能       |
+| コレクション順序 | 決定的                  | 非決定的（明示的ソート必須）       |
