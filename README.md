@@ -229,6 +229,12 @@ pnpm dev
 - [ ] `tailwind.config.js` や `postcss.config.js` が **存在しない** ことを確認
 - [ ] ビルドエラーがないことを確認 (`pnpm build`)
 
+> **補足: ESLint / Prettier / VSCode 設定について**
+>
+> ESLint・Prettier・VSCode の開発環境設定は、コードを書き始める前（Phase 2 の直後）に整備するのが望ましい。
+> 後から導入すると既存ファイルに大量のフォーマット差分が発生し、git の差分が読みづらくなる。
+> 具体的なセットアップ手順は Phase 9 に記載しているが、実施タイミングはここを推奨する。
+
 ---
 
 ## Phase 3: レイアウトとコンポーネント構築

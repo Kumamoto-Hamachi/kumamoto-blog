@@ -122,21 +122,12 @@ Astro 公式のヘルパー関数。引数に渡すオブジェクトの型補�
 
 minimal テンプレートの初期状態なので、すべてデフォルト値が使われている。主なデフォルト値：
 
-<<<<<<< HEAD:study.md
 | 設定           | デフォルト | 意味                                                 |
 | -------------- | ---------- | ---------------------------------------------------- |
 | `output`       | `"static"` | 静的サイト生成（SSG）                                |
 | `site`         | なし       | サイト URL（未設定だと `Astro.site` が `undefined`） |
 | `integrations` | `[]`       | 追加インテグレーションなし                           |
 | `vite`         | `{}`       | Vite の追加設定なし                                  |
-=======
-| 設定           | デフォルト | 意味                                                |
-| -------------- | ---------- | --------------------------------------------------- |
-| `output`       | `"static"` | 静的サイト生成（SSG）                               |
-| `site`         | なし       | サイトURL（未設定だと `Astro.site` が `undefined`） |
-| `integrations` | `[]`       | 追加インテグレーションなし                          |
-| `vite`         | `{}`       | Vite の追加設定なし                                 |
->>>>>>> c71f2ad (feat: ESLint + Prettier のセットアップ):memo.md
 
 README の Phase 2 以降で、ここに `site`、`vite.plugins`（Tailwind）、`integrations`（sitemap）が追加されていく予定。
 
