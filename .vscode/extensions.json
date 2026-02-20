@@ -2,6 +2,7 @@
   "recommendations": [
     "astro-build.astro-vscode",
     "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "vitest.explorer",
     "usernamehw.errorlens",
