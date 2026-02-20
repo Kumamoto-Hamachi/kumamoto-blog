@@ -1,8 +1,43 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <BaseLayout title="ホーム">
-  <h1 class="text-3xl font-bold mb-4">kumamoto blog</h1>
-  <p class="text-gray-600">技術メモと学習記録</p>
+  <h1 class="text-3xl font-bold mb-8">記事一覧</h1>
+  <ul class="space-y-6">
+    {
+      posts.map((post) => (
+        <li>
+          <a
+            href={`/blog/${post.id}`}
+            class="block group"
+          >
+            <h2 class="text-xl font-semibold group-hover:text-blue-600 transition-colors">
+              {post.data.title}
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString("ja-JP")}
+              </time>
+            </p>
+            <p class="text-gray-600 mt-2">{post.data.description}</p>
+            {post.data.tags.length > 0 && (
+              <div class="flex gap-2 mt-2">
+                {post.data.tags.map((tag) => (
+                  <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </BaseLayout>

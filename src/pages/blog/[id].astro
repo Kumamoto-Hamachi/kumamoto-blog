@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Prose from "../../components/Prose.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article>
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">{post.data.title}</h1>
+      <div class="flex items-center gap-4 mt-2 text-sm text-gray-500">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString("ja-JP")}
+        </time>
+        {
+          post.data.updatedDate && (
+            <span>
+              (更新:{" "}
+              {post.data.updatedDate.toLocaleDateString("ja-JP")})
+            </span>
+          )
+        }
+      </div>
+      {
+        post.data.tags.length > 0 && (
+          <div class="flex gap-2 mt-3">
+            {post.data.tags.map((tag) => (
+              <a
+                href={`/tags/${tag}`}
+                class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 transition-colors"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+    <Prose>
+      <Content />
+    </Prose>
+  </article>
+</BaseLayout>
