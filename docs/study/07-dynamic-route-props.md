@@ -16,8 +16,8 @@ Astro は以下の流れで処理する:
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
-    params: { id: post.id },  // URLパラメータ
-    props: { post },          // ページに渡すデータ
+    params: { id: post.id }, // URLパラメータ
+    props: { post }, // ページに渡すデータ
   }));
 }
 ```

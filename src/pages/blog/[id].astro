@@ -31,8 +31,7 @@ const { Content } = await render(post);
         {
           post.data.updatedDate && (
             <span>
-              (更新:{" "}
-              {post.data.updatedDate.toLocaleDateString("ja-JP")})
+              (更新: {post.data.updatedDate.toLocaleDateString("ja-JP")})
             </span>
           )
         }

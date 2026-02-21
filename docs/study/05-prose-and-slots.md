@@ -97,7 +97,7 @@ Prose.astro は**ブログ記事本文にきれいなスタイルを当てるた
 ```astro
 <!-- Prose.astro（子コンポーネント） -->
 <div class="prose prose-gray max-w-none">
-  <slot />   ← ここに親から渡された中身が入る
+  <slot /> ← ここに親から渡された中身が入る
 </div>
 ```
 
@@ -140,7 +140,6 @@ Svelte:  <slot />
 ```
 
 ```astro
-<!-- 子：BaseLayout.astro（受け取る側） -->
 ---
 interface Props {
   title: string;
@@ -151,6 +150,7 @@ const { title, description = "kumamoto blog — 技術メモと学習記録" } =
   Astro.props;
 ---
 
+<!-- 子：BaseLayout.astro（受け取る側） -->
 <title>{title} | kumamoto blog</title>
 <meta name="description" content={description} />
 ```

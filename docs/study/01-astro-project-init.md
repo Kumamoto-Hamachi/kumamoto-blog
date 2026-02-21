@@ -20,12 +20,10 @@
 3. `pnpm install` で依存関係をインストール
 
 4. `package.json` の修正
-
    - `name` を `tmp-astro` → `kumamoto-blog` に変更
    - `pnpm.onlyBuiltDependencies` を追加（後述）
 
 5. `astro.config.mjs` → `astro.config.ts` にリネーム
-
    - README の Phase 2 以降で TypeScript 形式を使う想定のため
 
 6. `pnpm build` でビルド成功を確認
