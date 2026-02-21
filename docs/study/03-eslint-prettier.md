@@ -213,3 +213,20 @@ pnpm-lock.yaml
 - `.prettierrc` でフォーマットルールと Astro 対応を定義
 - `.prettierignore` で自動生成ファイルやロックファイルを除外
 - ESLint とは `eslint-config-prettier` で棲み分けている
+
+● 良い質問です。このプロジェクトでは Prettier
+  がフォーマットを担当し、eslint-config-prettier で ESLint
+  のフォーマット系ルールを無効化しています。
+
+  ただし lint:fix には用途があります:
+
+  - ESLint の自動修正可能なルール（例: no-unused-imports の自動削除、prefer-const
+  への自動変換など）は --fix でしか修正されません
+  - これらはコードのロジックや品質に関するルールで、Prettier の守備範囲外です
+
+  つまり役割分担は:
+  - Prettier → フォーマット（インデント、クォート、セミコロン等）
+  - lint:fix → コード品質ルールの自動修正（未使用 import の除去等）
+
+  現時点の設定（recommended ルールのみ）だと --fix で自動修正されるケースは少ないですが
+  、今後ルールを追加すれば活きてきます。残しておいて問題ないかと思います。
