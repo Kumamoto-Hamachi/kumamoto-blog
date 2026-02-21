@@ -17,17 +17,19 @@ ESLint v9+ で推奨される **Flat Config**（`eslint.config.js`）形式。
 
 ### 1. インポート（1〜4行目）
 
-| モジュール | 役割 |
-|---|---|
-| `eslint-plugin-astro` | `.astro` ファイル用の ESLint プラグイン |
-| `@typescript-eslint/eslint-plugin` | TypeScript 用のルールセット |
-| `@typescript-eslint/parser` | TypeScript を ESLint が解析するためのパーサー |
-| `eslint-config-prettier` | Prettier と競合する ESLint のフォーマット系ルールを無効化する設定 |
+| モジュール                         | 役割                                                              |
+| ---------------------------------- | ----------------------------------------------------------------- |
+| `eslint-plugin-astro`              | `.astro` ファイル用の ESLint プラグイン                           |
+| `@typescript-eslint/eslint-plugin` | TypeScript 用のルールセット                                       |
+| `@typescript-eslint/parser`        | TypeScript を ESLint が解析するためのパーサー                     |
+| `eslint-config-prettier`           | Prettier と競合する ESLint のフォーマット系ルールを無効化する設定 |
 
 ### 2. グローバル ignores（8行目）
 
 ```js
-{ ignores: ["dist/", ".astro/", "node_modules/"] }
+{
+  ignores: ["dist/", ".astro/", "node_modules/"];
+}
 ```
 
 ビルド出力（`dist/`）、Astro の生成ファイル（`.astro/`）、依存パッケージ（`node_modules/`）をリント対象から除外。
@@ -87,6 +89,7 @@ function greet(name: string): void { ... }
 パーサーが生成した AST に対して **実際にチェックを行うルール群** を提供する。
 
 例:
+
 - `@typescript-eslint/no-unused-vars` — 未使用の変数を検出
 - `@typescript-eslint/no-explicit-any` — `any` 型の使用を警告
 - `@typescript-eslint/no-floating-promises` — await し忘れた Promise を検出
@@ -131,12 +134,13 @@ TypeScript コード
 
 元々 ESLint はフォーマット系ルールも持っていたが、ESLint チームが2023年にフォーマット系ルールの非推奨化を発表した。
 
-| ツール | 役割 |
-|---|---|
-| ESLint | コード品質（バグ検出、アンチパターン） |
-| Prettier | フォーマット（見た目の統一） |
+| ツール   | 役割                                   |
+| -------- | -------------------------------------- |
+| ESLint   | コード品質（バグ検出、アンチパターン） |
+| Prettier | フォーマット（見た目の統一）           |
 
 Prettier が優れている点:
+
 - **対応言語が広い**: JS/TS だけでなく HTML, CSS, JSON, Markdown, YAML なども対応
 - **opinionated**: 設定が少なく一貫性が出やすい
 - **高速**: AST 全体を一括整形する
@@ -165,11 +169,11 @@ Prettier が優れている点:
 
 ### 各オプション
 
-| オプション | 値 | 意味 |
-|---|---|---|
-| `semi` | `true` | 文末にセミコロンを**付ける** |
-| `singleQuote` | `false` | ダブルクォート `"` を使う（`'` ではなく `"`） |
-| `tabWidth` | `2` | インデント幅をスペース2つにする |
+| オプション      | 値      | 意味                                                             |
+| --------------- | ------- | ---------------------------------------------------------------- |
+| `semi`          | `true`  | 文末にセミコロンを**付ける**                                     |
+| `singleQuote`   | `false` | ダブルクォート `"` を使う（`'` ではなく `"`）                    |
+| `tabWidth`      | `2`     | インデント幅をスペース2つにする                                  |
 | `trailingComma` | `"all"` | 末尾カンマを可能な限り付ける（配列・オブジェクト・関数引数など） |
 
 `trailingComma: "all"` は git diff がきれいになる利点がある:
@@ -199,11 +203,11 @@ node_modules/
 pnpm-lock.yaml
 ```
 
-| パス | 除外理由 |
-|---|---|
-| `dist/` | ビルド出力。フォーマットする意味がない |
-| `.astro/` | Astro が自動生成するファイル群 |
-| `node_modules/` | 外部パッケージ |
+| パス             | 除外理由                                                                                 |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| `dist/`          | ビルド出力。フォーマットする意味がない                                                   |
+| `.astro/`        | Astro が自動生成するファイル群                                                           |
+| `node_modules/`  | 外部パッケージ                                                                           |
 | `pnpm-lock.yaml` | パッケージマネージャーが自動生成するロックファイル。フォーマットすると diff が膨大になる |
 
 `eslint.config.js` の `ignores` と対象がほぼ同じだが、加えて `pnpm-lock.yaml` も除外している。ロックファイルはツールが管理するものなので、人間やフォーマッターが触るべきではない。
@@ -215,18 +219,19 @@ pnpm-lock.yaml
 - ESLint とは `eslint-config-prettier` で棲み分けている
 
 ● 良い質問です。このプロジェクトでは Prettier
-  がフォーマットを担当し、eslint-config-prettier で ESLint
-  のフォーマット系ルールを無効化しています。
+がフォーマットを担当し、eslint-config-prettier で ESLint
+のフォーマット系ルールを無効化しています。
 
-  ただし lint:fix には用途があります:
+ただし lint:fix には用途があります:
 
-  - ESLint の自動修正可能なルール（例: no-unused-imports の自動削除、prefer-const
+- ESLint の自動修正可能なルール（例: no-unused-imports の自動削除、prefer-const
   への自動変換など）は --fix でしか修正されません
-  - これらはコードのロジックや品質に関するルールで、Prettier の守備範囲外です
+- これらはコードのロジックや品質に関するルールで、Prettier の守備範囲外です
 
-  つまり役割分担は:
-  - Prettier → フォーマット（インデント、クォート、セミコロン等）
-  - lint:fix → コード品質ルールの自動修正（未使用 import の除去等）
+つまり役割分担は:
 
-  現時点の設定（recommended ルールのみ）だと --fix で自動修正されるケースは少ないですが
-  、今後ルールを追加すれば活きてきます。残しておいて問題ないかと思います。
+- Prettier → フォーマット（インデント、クォート、セミコロン等）
+- lint:fix → コード品質ルールの自動修正（未使用 import の除去等）
+
+現時点の設定（recommended ルールのみ）だと --fix で自動修正されるケースは少ないですが
+、今後ルールを追加すれば活きてきます。残しておいて問題ないかと思います。

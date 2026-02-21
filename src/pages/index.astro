@@ -13,10 +13,7 @@ const posts = (await getCollection("blog"))
     {
       posts.map((post) => (
         <li>
-          <a
-            href={`/blog/${post.id}`}
-            class="block group"
-          >
+          <a href={`/blog/${post.id}`} class="block group">
             <h2 class="text-xl font-semibold group-hover:text-blue-600 transition-colors">
               {post.data.title}
             </h2>

@@ -8,16 +8,16 @@ Astro v5 + Tailwind CSS v4 + Cloudflare Pages で構築された日本語技術�
 
 ## コマンド
 
-| コマンド | 用途 |
-|---|---|
-| `pnpm dev` | 開発サーバー起動 (http://localhost:4321) |
-| `pnpm build` | 本番ビルド (`dist/` に出力) |
-| `pnpm test` | テスト実行（Vitest、1回実行） |
-| `pnpm test:watch` | テスト実行（ウォッチモード） |
-| `pnpm lint` | ESLint 実行 |
-| `pnpm lint:fix` | ESLint 自動修正 |
-| `pnpm format` | Prettier フォーマット |
-| `pnpm format:check` | Prettier フォーマットチェック |
+| コマンド            | 用途                                     |
+| ------------------- | ---------------------------------------- |
+| `pnpm dev`          | 開発サーバー起動 (http://localhost:4321) |
+| `pnpm build`        | 本番ビルド (`dist/` に出力)              |
+| `pnpm test`         | テスト実行（Vitest、1回実行）            |
+| `pnpm test:watch`   | テスト実行（ウォッチモード）             |
+| `pnpm lint`         | ESLint 実行                              |
+| `pnpm lint:fix`     | ESLint 自動修正                          |
+| `pnpm format`       | Prettier フォーマット                    |
+| `pnpm format:check` | Prettier フォーマットチェック            |
 
 単一テストファイルの実行: `pnpm vitest run tests/content.test.ts`
 
@@ -34,12 +34,12 @@ Astro v5 + Tailwind CSS v4 + Cloudflare Pages で構築された日本語技術�
 ### 記事フロントマター
 
 ```yaml
-title: "記事タイトル"        # 必須
-description: "説明文"         # 必須
-pubDate: 2026-02-19           # 必須（z.coerce.date()で変換）
-updatedDate: 2026-02-20       # オプション
-tags: ["astro", "ブログ"]     # デフォルト: []
-draft: false                  # デフォルト: false（trueなら非公開）
+title: "記事タイトル" # 必須
+description: "説明文" # 必須
+pubDate: 2026-02-19 # 必須（z.coerce.date()で変換）
+updatedDate: 2026-02-20 # オプション
+tags: ["astro", "ブログ"] # デフォルト: []
+draft: false # デフォルト: false（trueなら非公開）
 ```
 
 ### ページ構成
@@ -60,6 +60,7 @@ draft: false                  # デフォルト: false（trueなら非公開）
 ### スタイリング
 
 Tailwind CSS v4 を使用。v3 との主な違い:
+
 - `@import "tailwindcss"` で読み込み（`@tailwind` ディレクティブは廃止）
 - プラグインは CSS の `@plugin` ディレクティブで読み込み（`src/styles/global.css`）
 - `@tailwindcss/vite` を Vite プラグインとして使用（`@astrojs/tailwind` は非推奨）

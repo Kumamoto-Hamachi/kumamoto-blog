@@ -153,8 +153,8 @@ return [...tags].map((tag) => ({
 
 ```typescript
 posts
-  .filter((post) => post.data.tags.includes(tag))  // このタグを持つ記事だけ残す
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())  // 日付降順
+  .filter((post) => post.data.tags.includes(tag)) // このタグを持つ記事だけ残す
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()); // 日付降順
 ```
 
 - `.filter()` — そのタグを含む記事だけに絞り込む
@@ -222,11 +222,11 @@ Awaited<...>
 
 ### TypeScript ユーティリティ型のまとめ
 
-| ユーティリティ型 | やること | 例 |
-|---|---|---|
-| `typeof` | 値から型を取得 | `typeof myFunc` → 関数の型 |
-| `ReturnType<T>` | 関数型の返り値型を取得 | `ReturnType<typeof fn>` → 返り値の型 |
-| `Awaited<T>` | `Promise<X>` から `X` を取り出す | `Awaited<Promise<string>>` → `string` |
+| ユーティリティ型 | やること                         | 例                                    |
+| ---------------- | -------------------------------- | ------------------------------------- |
+| `typeof`         | 値から型を取得                   | `typeof myFunc` → 関数の型            |
+| `ReturnType<T>`  | 関数型の返り値型を取得           | `ReturnType<typeof fn>` → 返り値の型  |
+| `Awaited<T>`     | `Promise<X>` から `X` を取り出す | `Awaited<Promise<string>>` → `string` |
 
 ---
 

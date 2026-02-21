@@ -55,11 +55,11 @@ const posts = await getCollection("blog");
 
 自分で書くのは `content.config.ts` の Zod スキーマだけ。TypeScript の型は Astro が自動生成する。
 
-| 場所 | 役割 | 自分で書く？ |
-|------|------|-------------|
-| `src/content.config.ts` | Zodスキーマ定義（型の元） | **自分で書く** |
-| `.astro/content.d.ts` | TypeScript型定義 | **自動生成**（触らない） |
-| `.astro/collections/blog.schema.json` | JSONスキーマ | **自動生成**（触らない） |
+| 場所                                  | 役割                      | 自分で書く？             |
+| ------------------------------------- | ------------------------- | ------------------------ |
+| `src/content.config.ts`               | Zodスキーマ定義（型の元） | **自分で書く**           |
+| `.astro/content.d.ts`                 | TypeScript型定義          | **自動生成**（触らない） |
+| `.astro/collections/blog.schema.json` | JSONスキーマ              | **自動生成**（触らない） |
 
 自動生成された `.astro/content.d.ts` の中では、Zodスキーマから `InferEntrySchema<"blog">` で型が推論される。
 コードで `CollectionEntry<"blog">` と書くだけで、自動生成された型が適用される。
@@ -130,14 +130,14 @@ loader: glob({ pattern: "**/*.md", base: "./src/data/blog" }),
 
 ### まとめ表
 
-| フィールド | Zod定義 | 必須？ | TS型 | frontmatterでの例 |
-|---|---|---|---|---|
-| `title` | `z.string()` | 必須 | `string` | `title: "初めての記事"` |
-| `description` | `z.string()` | 必須 | `string` | `description: "紹介文"` |
-| `pubDate` | `z.coerce.date()` | 必須 | `Date` | `pubDate: 2025-01-15` |
-| `updatedDate` | `z.coerce.date().optional()` | 任意 | `Date \| undefined` | `updatedDate: 2025-02-01` |
-| `tags` | `z.array(z.string()).default([])` | 任意(default: `[]`) | `string[]` | `tags: ["astro", "blog"]` |
-| `draft` | `z.boolean().default(false)` | 任意(default: `false`) | `boolean` | `draft: true` |
+| フィールド    | Zod定義                           | 必須？                 | TS型                | frontmatterでの例         |
+| ------------- | --------------------------------- | ---------------------- | ------------------- | ------------------------- |
+| `title`       | `z.string()`                      | 必須                   | `string`            | `title: "初めての記事"`   |
+| `description` | `z.string()`                      | 必須                   | `string`            | `description: "紹介文"`   |
+| `pubDate`     | `z.coerce.date()`                 | 必須                   | `Date`              | `pubDate: 2025-01-15`     |
+| `updatedDate` | `z.coerce.date().optional()`      | 任意                   | `Date \| undefined` | `updatedDate: 2025-02-01` |
+| `tags`        | `z.array(z.string()).default([])` | 任意(default: `[]`)    | `string[]`          | `tags: ["astro", "blog"]` |
+| `draft`       | `z.boolean().default(false)`      | 任意(default: `false`) | `boolean`           | `draft: true`             |
 
 ---
 
@@ -188,11 +188,11 @@ title: Expected string, received number
 
 ### チェック可能範囲の比較
 
-| データの出所 | TypeScript型 | Zod |
-|---|---|---|
-| `.ts` ファイル内のコード | チェックできる | チェックできる |
-| `.md` の frontmatter | **チェックできない** | **チェックできる** |
-| API からのレスポンス | **チェックできない** | **チェックできる** |
+| データの出所               | TypeScript型         | Zod                |
+| -------------------------- | -------------------- | ------------------ |
+| `.ts` ファイル内のコード   | チェックできる       | チェックできる     |
+| `.md` の frontmatter       | **チェックできない** | **チェックできる** |
+| API からのレスポンス       | **チェックできない** | **チェックできる** |
 | ユーザー入力（フォーム等） | **チェックできない** | **チェックできる** |
 
 TypeScript の型が効くのは `.ts` ファイル内のコードだけ。外から入ってくるデータには無力。
@@ -235,11 +235,11 @@ const schema = z.object({
 
 ### まとめ
 
-| | TypeScript型 | Zod |
-|---|---|---|
-| 役割 | コンパイル時の型チェック | 実行時のデータ検証 + 型推論 |
-| `.ts` コードに対して | 効く | 効く |
-| 外部データ（Markdown等）に対して | **効かない** | **効く** |
-| 実行時に残るか | 消える | 残る |
+|                                  | TypeScript型             | Zod                         |
+| -------------------------------- | ------------------------ | --------------------------- |
+| 役割                             | コンパイル時の型チェック | 実行時のデータ検証 + 型推論 |
+| `.ts` コードに対して             | 効く                     | 効く                        |
+| 外部データ（Markdown等）に対して | **効かない**             | **効く**                    |
+| 実行時に残るか                   | 消える                   | 残る                        |
 
 Astro の Content Collections で Zod を使う理由は、**Markdown という「TypeScript の外の世界」から来るデータを安全に扱うため**。
